@@ -1,6 +1,7 @@
 'use client'
 
 import LogoutPopUp from "@/components/LogoutPopUp";
+import CustomFileInput from "@/components/CustomFileInput";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { redirect } from 'next/navigation'
@@ -21,7 +22,7 @@ export default function Home() {
 
   return (
     <>
-    {isLogout && <LogoutPopUp isLogout = {isLogout} setIsLogout = {setIsLogout}/>}
+      {isLogout && <LogoutPopUp isLogout={isLogout} setIsLogout={setIsLogout} />}
 
       <div className="home bg-gray-950 min-h-screen flex">
         {/* Left Container */}
@@ -37,7 +38,7 @@ export default function Home() {
             </div>
           </div>
           <div className="logout">
-            <button onClick={() => { setIsLogout(true) }} className="relative inline-flex items-center justify-center p-[1.4px] overflow-hidden text-xs text-gray-400 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-1 dark:focus:ring-cyan-800 cursor-pointer my-5">
+            <button onClick={() => { setIsLogout(true) }} className="relative inline-flex items-center justify-center p-[1.5px] overflow-hidden text-xs text-gray-400 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-1 dark:focus:ring-cyan-800 cursor-pointer my-5">
               <span className="relative px-3 py-1.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
                 Logout
               </span>
@@ -61,9 +62,15 @@ export default function Home() {
                 <button className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
               </div>
             </div>
-            <div className="fileUpload">
+            <CustomFileInput/>
+            {/* <div className="fileUpload flex flex-col gap-5 justify-center items-center border border-amber-50">
+              <input
+                type="file"
+                className=""
+                aria-label="File upload"
+              />
               <button type="button" className="text-gray-900 bg-white border border-gray-900 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-100 font-medium rounded-lg text-sm px-7 py-2.5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-800 dark:hover:border-gray-600 dark:focus:ring-gray-800 cursor-pointer"><span className="flex justify-between items-center gap-4"><Image src="/FileUpload.png" alt="Upload File" width={20} height={20}></Image>Upload File</span></button>
-            </div>
+            </div> */}
           </div>
         </div>
 
