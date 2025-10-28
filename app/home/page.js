@@ -5,12 +5,15 @@ import CustomFileInput from "@/components/CustomFileInput";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { redirect } from 'next/navigation'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getFileAction } from "@/actions/getFileAction";
 
 
 export default function Home() {
   const { data: session } = useSession();
   const [isLogout, setIsLogout] = useState(false)
+
+  const [files, setFiles] = useState([])
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
@@ -20,6 +23,17 @@ export default function Home() {
     redirect("/")
   }
 
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const fileData = await getFileAction();
+      setFiles(fileData);
+      console.log("Fetched files:", fileData);
+    }
+    fetchFiles();
+  }, [])
+
+  
+
   return (
     <>
       {isLogout && <LogoutPopUp isLogout={isLogout} setIsLogout={setIsLogout} />}
@@ -27,14 +41,14 @@ export default function Home() {
       <div className="home bg-gray-950 min-h-screen flex">
         {/* Left Container */}
         <div className="left flex flex-col justify-between text-white bg-gray-900 w-1/4 float-left p-5">
-          <div className="history py-5 px-2 mt-30">
-            <h2 className="pb-5">History</h2>
-            <div className="chats text-gray-400">
-              <p className="">chat 1</p>
-              <p className="">chat 2</p>
-              <p className="">chat 3</p>
-              <p className="">chat 4</p>
-              <p className="">chat 5</p>
+          <div className="dashboard py-5 px-2 mt-30">
+            <h2 className="py-1.5 px-2 text-gray-400">Saved Files</h2>
+            <div className="files flex flex-col gap-1 my-1 py-2 text-gray-200">
+              {files.map((file) => (
+                <span className="px-2.5 py-2 rounded-lg hover:bg-gray-800 cursor-pointer" key={file._id}>
+                  <p className="text-sm" >{file.fileName}</p>
+                </span>
+              ))}
             </div>
           </div>
           <div className="logout">
@@ -63,14 +77,6 @@ export default function Home() {
               </div>
             </div>
             <CustomFileInput/>
-            {/* <div className="fileUpload flex flex-col gap-5 justify-center items-center border border-amber-50">
-              <input
-                type="file"
-                className=""
-                aria-label="File upload"
-              />
-              <button type="button" className="text-gray-900 bg-white border border-gray-900 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-100 font-medium rounded-lg text-sm px-7 py-2.5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-800 dark:hover:border-gray-600 dark:focus:ring-gray-800 cursor-pointer"><span className="flex justify-between items-center gap-4"><Image src="/FileUpload.png" alt="Upload File" width={20} height={20}></Image>Upload File</span></button>
-            </div> */}
           </div>
         </div>
 

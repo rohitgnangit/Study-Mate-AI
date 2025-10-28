@@ -11,4 +11,4 @@ const FileUploadSchema = new Schema({
     uploadedAt:{type:Date, default:Date.now}
 })
 
-export default models.FileUpload || model("FileUpload", FileUploadSchema);
+export default models?.FileUpload || model("FileUpload", FileUploadSchema);
