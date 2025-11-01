@@ -47,7 +47,7 @@ const CustomFileInput = () => {
       formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
 
       // Define the Cloudinary API URL
-      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/raw/upload`;
 
       // Send the request to Cloudinary
       const response = await fetch(cloudinaryUrl, {
@@ -65,7 +65,7 @@ const CustomFileInput = () => {
       // Sending file data to server action to save in database
       await saveFileAction({
         userId: session.user.id,
-        fileUrl: result.url,
+        fileUrl: result.secure_url,
         publicId: result.public_id,
         fileName: uploadFile.name,
         fileType: uploadFile.type,

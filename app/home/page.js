@@ -27,7 +27,7 @@ export default function Home() {
     const fetchFiles = async () => {
       const fileData = await getFileAction();
       setFiles(fileData);
-      console.log("Fetched files:", fileData);
+      // console.log("Fetched files:", fileData);
     }
     fetchFiles();
   }, [])
