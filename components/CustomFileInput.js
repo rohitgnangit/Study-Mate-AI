@@ -46,8 +46,11 @@ const CustomFileInput = () => {
       formData.append('file', uploadFile);
       formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
 
+      const isPDF = uploadFile.type === 'application/pdf';
+      const resourceType = isPDF ? 'raw' : 'image';
+
       // Define the Cloudinary API URL
-      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/raw/upload`;
+      const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`;
 
       // Send the request to Cloudinary
       const response = await fetch(cloudinaryUrl, {
