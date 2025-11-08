@@ -9,6 +9,7 @@ const FileUploadSchema = new Schema({
     fileSize:{type:Number, required:true},
     publicId:{type:String, required:true},
     extractedText:{type:String},
+    chunks: {type:[String], default:[]} ,
     uploadedAt:{type:Date, default:Date.now}
 })
 

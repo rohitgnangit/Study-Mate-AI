@@ -9,9 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@langchain/textsplitters": "^1.0.0",
     "@splinetool/react-spline": "^4.1.0",
     "axios": "^1.13.2",
     "cloudinary": "^2.8.0",
+    "langchain": "^1.0.3",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.546.0",
     "mongoose": "^8.19.2",
