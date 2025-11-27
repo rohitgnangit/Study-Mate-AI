@@ -15,8 +15,6 @@ const LogoutPopUp = ( { isLogout, setIsLogout } ) => {
       setIsLogout(false);
     }
     
-    
-
     return (
         <div className=" h-screen w-screen bg-transparent backdrop-blur-sm fixed left-0 top-0 z-50  flex justify-center items-center">
             <div className="min-h-[25%] min-w-[30%] flex flex-col justify-center gap-7 items-center rounded-lg text-gray-200 bg-gray-800">
