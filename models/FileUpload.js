@@ -9,7 +9,13 @@ const FileUploadSchema = new Schema({
     fileSize:{type:Number, required:true},
     publicId:{type:String, required:true},
     extractedText:{type:String},
-    chunks: {type:[String], default:[]} ,
+    chunks: [
+        {
+            text: { type: String, required: true },
+            embedding: { type: [Number], required: true }, // Array of numbers (your 768-dimension vector)
+            index: { type: Number, required: true }
+        }
+    ],
     uploadedAt:{type:Date, default:Date.now}
 })
 
