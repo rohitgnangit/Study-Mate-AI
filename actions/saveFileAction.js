@@ -5,9 +5,13 @@ import FileUpload from "@/models/FileUpload"
 import { extractTextFromPdfUrl } from "@/lib/pdfExtract"
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { getEmbedding } from "@/lib/embeddings";
+import { revalidatePath } from "next/cache";
+// import { getServerSession } from "next-auth/next";
+// import { authOptions } from "@app/api/auth/[...nextauth]/route";
 
 
 export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fileSize, userId, filePath}) {
+    // const session = await getServerSession(authOptions);
 
     await connectDB();
 
@@ -37,9 +41,10 @@ export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fi
             })
         })
     }
+    
     console.log("⚙️ Generated embeddings for chunks", chunksWithEmbeddings.length);
-
-
+    
+    
     const newFile = await FileUpload.create({
         userId,
         fileName,
@@ -50,5 +55,6 @@ export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fi
         extractedText: rawText,
         chunks: chunksWithEmbeddings,
     })
+    revalidatePath("/home"); 
     return JSON.parse(JSON.stringify(newFile));
 }

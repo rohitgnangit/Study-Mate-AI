@@ -7,32 +7,66 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { redirect } from 'next/navigation'
 import { useState, useEffect } from "react";
 import { getFileAction } from "@/actions/getFileAction";
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
+
   const { data: session } = useSession();
   const [isLogout, setIsLogout] = useState(false)
 
   const [files, setFiles] = useState([])
 
+  const [input, setInput] = useState('');
+  const [question, setQuestion] = useState('');
+
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
   const name = user.charAt(0).toUpperCase() + user.slice(1);
 
-  if (!session) {
-    redirect("/")
-  }
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (session === undefined) return; // Wait for session to be defined
+    if (!session) {
+      router.push("/");
+    }
+  }, [session]);
+
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const fileData = await getFileAction();
+      if(!session?.user?.email) return;
+      const fileData = await getFileAction(session.user.email);
       setFiles(fileData);
       // console.log("Fetched files:", fileData);
     }
     fetchFiles();
-  }, [])
+  }, [session])
 
-  
+  // Getting question from input field
+  const handleQuestion = (e) => {
+    setInput(e.target.value)
+  }
+  // Submitting Question after button click
+  const submitQuestion = async () => {
+    const userQuestion = input
+    setQuestion(userQuestion)
+    setInput('')
+    // Sending Question to API
+    const res = await fetch("/api/get-embeddings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question: userQuestion }),
+    })
+
+    const { embeddings } = await res.json();
+    console.log("Question Embeddings:", embeddings);
+   
+  }
+
 
   return (
     <>
@@ -62,22 +96,43 @@ export default function Home() {
 
         {/* Right Container */}
         <div className="right w-full">
-          <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center">
-            <div className="head border">
-              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
-                Hello {name}
-              </h1>
+
+          {/* User Question Enterred then show this Chat UI */}
+          {question ? 
+          <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center border border-white relative">
+            <div className="question py-2 px-5 bg-gray-700 rounded-2xl absolute right-5">
+              <p className="text-gray-200">{question}</p>
             </div>
-            <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200">
-              {/* Chat Input */}
-              <input type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
-              {/* Send Button */}
-              <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
-                <button className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
+             <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200 absolute bottom-[3px]">
+                {/* Chat Input */}
+                <input onChange={handleQuestion} onKeyDown={(e)=>{e.key === "Enter" && submitQuestion()}} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
+                {/* Send Button */}
+                <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
+                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
+                </div>
               </div>
+              <span className="text-gray-200 text-xs absolute bottom-3">Lernova can make mistakes. so double check it</span>
+          </div> 
+
+          :
+          // If no question enterred then show this UI
+            <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center border border-white">
+              <div className="head border">
+                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
+                  Hello {name}
+                </h1>
+              </div>
+              <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200">
+                {/* Chat Input */}
+                <input onChange={handleQuestion} onKeyDown={(e)=>{e.key === "Enter" && submitQuestion()}} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
+                {/* Send Button */}
+                <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
+                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
+                </div>
+              </div>
+              <CustomFileInput />
             </div>
-            <CustomFileInput/>
-          </div>
+          }
         </div>
 
       </div>

@@ -12,7 +12,7 @@ const FileUploadSchema = new Schema({
     chunks: [
         {
             text: { type: String, required: true },
-            embedding: { type: [Number], required: true }, // Array of numbers (your 768-dimension vector)
+            embedding: { type: [Number], required: true }, // Array of numbers (your 1536-dimension vector)
             index: { type: Number, required: true }
         }
     ],

@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileText, Loader2 } from 'lucide-react';
 import { saveFileAction } from '@/actions/saveFileAction';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 const CustomFileInput = () => {
   const { data:session } = useSession();
+  const router = useRouter();
+  
 
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadFileLoading, setUploadFileLoading] = useState(false);
@@ -67,13 +70,14 @@ const CustomFileInput = () => {
 
       // Sending file data to server action to save in database
       await saveFileAction({
-        userId: session.user.id,
+        userId: session.user.email,
         fileUrl: result.secure_url,
         publicId: result.public_id,
         fileName: uploadFile.name,
         fileType: uploadFile.type,
         fileSize: uploadFile.size,
       })
+      // router.refresh();
 
       // Clear selected file after upload
       setUploadFile(null);
@@ -148,7 +152,8 @@ const CustomFileInput = () => {
         {/* Upload Message */}
         {uploadMessage && (
           <p className={`mt-2 text-sm font-medium ${uploadMessage.startsWith('❌') ? 'text-red-500' : 'text-green-600'}`}>
-            {uploadMessage}
+            {/* {uploadMessage} */}
+            Please upload pdf file only
           </p>
         )}
       </div>
