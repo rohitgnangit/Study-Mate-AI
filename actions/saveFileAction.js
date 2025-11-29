@@ -2,16 +2,14 @@
 
 import connectDB from "@/db/connectDB"
 import FileUpload from "@/models/FileUpload"
+import AIEmbeddings from "@/models/AIembeddings"
 import { extractTextFromPdfUrl } from "@/lib/pdfExtract"
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { getEmbedding } from "@/lib/embeddings";
 import { revalidatePath } from "next/cache";
-// import { getServerSession } from "next-auth/next";
-// import { authOptions } from "@app/api/auth/[...nextauth]/route";
 
 
 export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fileSize, userId, filePath}) {
-    // const session = await getServerSession(authOptions);
 
     await connectDB();
 
@@ -55,6 +53,21 @@ export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fi
         extractedText: rawText,
         chunks: chunksWithEmbeddings,
     })
+
+    const aiChunks = chunksWithEmbeddings.map((chunk) => ({
+        userId,
+        fileId: newFile._id.toString(),
+        fileName,
+        text: chunk.text,
+        embedding: chunk.embedding,
+        index: chunk.index,
+
+    }));
+
+    // Save all AI Embeddings in bulk
+    await AIEmbeddings.insertMany(aiChunks);
+    console.log(" Saved ", aiChunks.length, "vector search to AIChunk collection");    
+
     revalidatePath("/home"); 
     return JSON.parse(JSON.stringify(newFile));
 }
