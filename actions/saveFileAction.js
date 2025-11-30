@@ -2,7 +2,7 @@
 
 import connectDB from "@/db/connectDB"
 import FileUpload from "@/models/FileUpload"
-import AIEmbeddings from "@/models/AIembeddings"
+import AIEmbeddings from "@/models/AIEmbeddings"
 import { extractTextFromPdfUrl } from "@/lib/pdfExtract"
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { getEmbedding } from "@/lib/embeddings";

@@ -20,6 +20,9 @@ export default function Home() {
   const [input, setInput] = useState('');
   const [question, setQuestion] = useState('');
 
+  // Store selected fileId for vector search
+  const [selectedFileId, setSelectedFileId] = useState(null);
+
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
   const name = user.charAt(0).toUpperCase() + user.slice(1);
@@ -53,7 +56,8 @@ export default function Home() {
     const userQuestion = input
     setQuestion(userQuestion)
     setInput('')
-    // Sending Question to API
+
+    // Sending Question to API to get Embeddings
     const res = await fetch("/api/get-embeddings", {
       method: "POST",
       headers: {
@@ -64,6 +68,23 @@ export default function Home() {
 
     const { embeddings } = await res.json();
     console.log("Question Embeddings:", embeddings);
+
+    // Sending questionEmbeddings to vector search API
+    const searchRes = await fetch("/api/vector-search", {
+      method: "POST",
+      headers: {
+        "Content-Type" : "application/json",
+      },
+      body: JSON.stringify({
+        questionEmbedding: embeddings,  // Embedding array from above API
+        fileId: selectedFileId,
+        userId: session.user.email,  // Doing this for saftey
+      })
+    });
+    const { results } = await searchRes.json();
+    console.log("Relavant Chunks", results)
+
+    console.log("File", selectedFileId)
    
   }
 
@@ -79,7 +100,7 @@ export default function Home() {
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span className="px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer" key={file._id}>
+                <span key={file._id} onClick={()=>{setSelectedFileId(file._id)}} className="px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer" key={file._id}>
                   <p className="text-xs" >{file.fileName}</p>
                 </span>
               ))}
