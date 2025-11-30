@@ -22,6 +22,8 @@ export default function Home() {
 
   // Store selected fileId for vector search
   const [selectedFileId, setSelectedFileId] = useState(null);
+  // Storing the Generated Answer
+  const [answer, setAnswer] = useState('');
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
@@ -69,7 +71,7 @@ export default function Home() {
     const { embeddings } = await res.json();
     console.log("Question Embeddings:", embeddings);
 
-    // Sending questionEmbeddings to vector search API
+    // Sending questionEmbeddings to vector-search API
     const searchRes = await fetch("/api/vector-search", {
       method: "POST",
       headers: {
@@ -83,6 +85,22 @@ export default function Home() {
     });
     const { results } = await searchRes.json();
     console.log("Relavant Chunks", results)
+
+    // Sending the relavant chunks to generate answer API
+    const answerRes = await fetch("/api/generate-answer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: userQuestion,
+        chunks: results,
+      })
+    });
+
+    const { answer } = await answerRes.json();
+    setAnswer(answer);
+    console.log("Final Answer:", answer);
 
     console.log("File", selectedFileId)
    
@@ -100,7 +118,7 @@ export default function Home() {
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span key={file._id} onClick={()=>{setSelectedFileId(file._id)}} className="px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer" key={file._id}>
+                <span key={file._id} onClick={()=>{setSelectedFileId(file._id)}} className={`px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer ${selectedFileId === file._id ? 'bg-gray-800' : ''}`}>
                   <p className="text-xs" >{file.fileName}</p>
                 </span>
               ))}
@@ -124,6 +142,11 @@ export default function Home() {
             <div className="question py-2 px-5 bg-gray-700 rounded-2xl absolute right-5">
               <p className="text-gray-200">{question}</p>
             </div>
+            {answer &&
+              <div className="ansContainer py-2 px-5  mt-20 ">
+                <p className="ans text-gray-200">{answer}</p>
+              </div>
+            }
              <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200 absolute bottom-[3px]">
                 {/* Chat Input */}
                 <input onChange={handleQuestion} onKeyDown={(e)=>{e.key === "Enter" && submitQuestion()}} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
