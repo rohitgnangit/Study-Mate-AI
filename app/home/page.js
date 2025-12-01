@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation'
 import { useState, useEffect } from "react";
 import { getFileAction } from "@/actions/getFileAction";
 import { useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 
 export default function Home() {
@@ -24,13 +25,15 @@ export default function Home() {
   const [selectedFileId, setSelectedFileId] = useState(null);
   // Storing the Generated Answer
   const [answer, setAnswer] = useState('');
+  // Storing chat history messages
+  const [messages, setMessages] = useState([]);
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
   const name = user.charAt(0).toUpperCase() + user.slice(1);
 
   const router = useRouter();
-  
+
   useEffect(() => {
     if (session === undefined) return; // Wait for session to be defined
     if (!session) {
@@ -41,7 +44,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchFiles = async () => {
-      if(!session?.user?.email) return;
+      if (!session?.user?.email) return;
       const fileData = await getFileAction(session.user.email);
       setFiles(fileData);
       // console.log("Fetched files:", fileData);
@@ -75,7 +78,7 @@ export default function Home() {
     const searchRes = await fetch("/api/vector-search", {
       method: "POST",
       headers: {
-        "Content-Type" : "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         questionEmbedding: embeddings,  // Embedding array from above API
@@ -103,9 +106,43 @@ export default function Home() {
     console.log("Final Answer:", answer);
 
     console.log("File", selectedFileId)
-   
+
+    // Saving the user message using API
+    await fetch("/api/save-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: session.user.email,
+        fileId: selectedFileId,
+        sender: "user",
+        text: userQuestion,
+      })
+    });
+
+    // Saving the AI message using API
+    await fetch("/api/save-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: session.user.email,
+        fileId: selectedFileId,
+        sender: "ai",
+        text: answer,
+      })
+    });
+
+    await loadChat(selectedFileId);
   }
 
+  // Function to load chat history when file is selected
+  const loadChat = async (fileId) => {
+    setSelectedFileId(fileId);
+
+    const res = await fetch("/api/get-chat?fileId=" + fileId + "&userId=" + session.user.email);
+    const { messages } = await res.json();
+    setMessages(messages);
+    console.log("Chat History:", messages);
+  }
 
   return (
     <>
@@ -118,7 +155,7 @@ export default function Home() {
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span key={file._id} onClick={()=>{setSelectedFileId(file._id)}} className={`px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer ${selectedFileId === file._id ? 'bg-gray-800' : ''}`}>
+                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer ${selectedFileId === file._id ? 'bg-gray-800' : ''}`}>
                   <p className="text-xs" >{file.fileName}</p>
                 </span>
               ))}
@@ -137,29 +174,35 @@ export default function Home() {
         <div className="right w-full">
 
           {/* User Question Enterred then show this Chat UI */}
-          {question ? 
-          <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center border border-white relative">
-            <div className="question py-2 px-5 bg-gray-700 rounded-2xl absolute right-5">
-              <p className="text-gray-200">{question}</p>
-            </div>
-            {answer &&
-              <div className="ansContainer py-2 px-5  mt-20 ">
-                <p className="ans text-gray-200">{answer}</p>
-              </div>
-            }
-             <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200 absolute bottom-[3px]">
+          {selectedFileId ?
+            <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center relative ">
+
+                <div className="ansContainer text-gray-300 text-sm py-2 px-5 font-sans-serif overflow-y-auto h-[88vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-950 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
+                  {messages.map((msg, i) => (
+                    <div key={i} className="w-full mb-5">
+                    <div className={msg.sender === "user" ? "userBubble" : "aiBubble"}>
+                      <ReactMarkdown>
+                        {msg.text}
+                      </ReactMarkdown>
+                    </div>
+                    <div className="line border-b border-gray-700 my-4 opacity-40"></div>
+                    </div>
+                  ))}
+                </div>
+        
+              <div className="inputField flex justify-between items-center w-full h-15 my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200 absolute bottom-[3px] bg-gray-950">
                 {/* Chat Input */}
-                <input onChange={handleQuestion} onKeyDown={(e)=>{e.key === "Enter" && submitQuestion()}} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
+                <input onChange={handleQuestion} onKeyDown={(e) => { e.key === "Enter" && submitQuestion() }} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
                 {/* Send Button */}
                 <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
                   <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
                 </div>
               </div>
               <span className="text-gray-200 text-xs absolute bottom-3">Lernova can make mistakes. so double check it</span>
-          </div> 
+            </div>
 
-          :
-          // If no question enterred then show this UI
+            :
+            // If no question enterred then show this UI
             <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center border border-white">
               <div className="head border">
                 <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
@@ -168,7 +211,7 @@ export default function Home() {
               </div>
               <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200">
                 {/* Chat Input */}
-                <input onChange={handleQuestion} onKeyDown={(e)=>{e.key === "Enter" && submitQuestion()}} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
+                <input onChange={handleQuestion} onKeyDown={(e) => { e.key === "Enter" && submitQuestion() }} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
                 {/* Send Button */}
                 <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
                   <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>

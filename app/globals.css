@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+.userBubble {
+  background-color: #2563eb; /* blue */
+  color: white;
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 70%;
+  margin: 10px 0;
+  align-self: flex-end; /* push to right */
+  white-space: pre-wrap;
+}
+
+/* .aiBubble { */
+  /* background-color: #1f2937; grey */
+  /* color: white; */
+  /* padding: 10px 14px; */
+  /* border-radius: 16px; */
+  /* max-width: 70%; */
+  /* margin: 10px 0; */
+  /* align-self: flex-start; push to left */
+  /* white-space: pre-wrap; */
+  /* border: 1px solid #374151; */
+/* } */
+
+

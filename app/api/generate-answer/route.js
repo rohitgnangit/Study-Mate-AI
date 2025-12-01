@@ -16,17 +16,31 @@ export async function POST(req) {
         ).join("\n\n");
 
         // Build final prompt
-        const prompt = `You are a helpful study assistant. 
-Use ONLY the following context to answer the question.
-If the answer is not in the context, say "I don't see this information in the provided notes."
+    const prompt = `
+You are a highly structured study assistant.
 
-Context:
+Use ONLY the following context to answer the question.
+Your answer MUST follow this format:
+
+1. **Short Explanation (2–3 lines)**
+2. **Key Points (bulleted list)** 
+3. **Important Definitions (if any)**
+4. **Final Summary (1 line)**
+
+If the answer is not in the context, say:
+"I don't see this information in the provided notes."
+
+---
+
+📘 **Context**:
 ${context}
 
-Question: ${question}
+❓ **Question**:
+${question}
 
-Answer:
-    `;
+✍️ **Answer (follow the structure strictly)**:
+`;
+
 
     //  Calling the OpenAI
     const response = await client.responses.create({
