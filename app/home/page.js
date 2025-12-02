@@ -5,7 +5,7 @@ import CustomFileInput from "@/components/CustomFileInput";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { redirect } from 'next/navigation'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getFileAction } from "@/actions/getFileAction";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -27,6 +27,8 @@ export default function Home() {
   const [answer, setAnswer] = useState('');
   // Storing chat history messages
   const [messages, setMessages] = useState([]);
+  // useRef for auto-scroll of the chat after getting answer
+  const messageEndRef = useRef(null);
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
@@ -142,20 +144,27 @@ export default function Home() {
     const { messages } = await res.json();
     setMessages(messages);
     console.log("Chat History:", messages);
+
   }
+  // Auto-scroll to the bottom of the chat
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages])
 
   return (
     <>
       {isLogout && <LogoutPopUp isLogout={isLogout} setIsLogout={setIsLogout} />}
 
-      <div className="home bg-gray-950 min-h-screen flex">
+      <div className="home bg-[#202123] min-h-screen flex">
         {/* Left Container */}
-        <div className="left flex flex-col justify-between text-white bg-gray-900 w-1/4 float-left py-5">
+        <div className="left flex flex-col justify-between text-white bg-[#18191c] w-1/4 float-left py-5">
           <div className="dashboard py-5 mt-20 w-full">
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 rounded-lg hover:bg-gray-800 cursor-pointer ${selectedFileId === file._id ? 'bg-gray-800' : ''}`}>
+                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 rounded-lg hover:bg-[#2d2e33] cursor-pointer ${selectedFileId === file._id ? 'bg-[#2d2e33]' : ''}`}>
                   <p className="text-xs" >{file.fileName}</p>
                 </span>
               ))}
@@ -175,46 +184,50 @@ export default function Home() {
 
           {/* User Question Enterred then show this Chat UI */}
           {selectedFileId ?
-            <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center relative ">
+            <div className="QA mx-auto w-[60%] h-screen flex flex-col justify-center items-center">
 
-                <div className="ansContainer text-gray-300 text-sm py-2 px-5 font-sans-serif overflow-y-auto h-[88vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-950 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
-                  {messages.map((msg, i) => (
-                    <div key={i} className="w-full mb-5">
-                    <div className={msg.sender === "user" ? "userBubble" : "aiBubble"}>
+              <div className="ansContainer text-gray-300 text-sm py-5 px-5 mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
+                {messages.map((msg, i) => (
+                  <div key={i} className="w-full mb-5">
+                    <div className={msg.sender === "user"
+      ? "ml-auto bg-[#343541] text-white rounded-2xl p-4 my-3 shadow-md prose prose-invert"
+      : "mr-auto  text-gray-100 p-4 my-3 shadow-md prose prose-invert"}>
                       <ReactMarkdown>
                         {msg.text}
                       </ReactMarkdown>
                     </div>
                     <div className="line border-b border-gray-700 my-4 opacity-40"></div>
-                    </div>
-                  ))}
-                </div>
-        
-              <div className="inputField flex justify-between items-center w-full h-15 my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200 absolute bottom-[3px] bg-gray-950">
+                  </div>
+                ))}
+                <div ref={messageEndRef}></div>
+              </div>
+
+              <div className="inputField flex justify-between items-center w-full h-15 rounded-2xl border-1 border-slate-900 bg-[#26272b] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
                 {/* Chat Input */}
                 <input onChange={handleQuestion} onKeyDown={(e) => { e.key === "Enter" && submitQuestion() }} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
                 {/* Send Button */}
                 <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
-                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
+                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-[#222226] hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
                 </div>
               </div>
-              <span className="text-gray-200 text-xs absolute bottom-3">Lernova can make mistakes. so double check it</span>
+              <span className="text-gray-200 text-xs my-2">Lernova can make mistakes. so double check it</span>
             </div>
 
             :
             // If no question enterred then show this UI
-            <div className="QA mx-auto w-[70%] min-h-screen flex flex-col justify-center items-center border border-white">
+            <div className="QA mx-auto w-[60%] min-h-screen flex flex-col justify-center items-center gap-5">
               <div className="head border">
                 <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
                   Hello {name}
                 </h1>
               </div>
-              <div className="inputField flex justify-between items-center h-15 w-full my-10 rounded-2xl border border-slate-500 shadow-sm shadow-blue-200">
+              <span className="text-gray-400 text-xs">Please upload a file, if saved files are empty.</span>
+              <div className="inputField flex justify-between items-center mb-10 h-15 w-full rounded-2xl bg-[#26272b]  border-1 border-slate-900 shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
                 {/* Chat Input */}
                 <input onChange={handleQuestion} onKeyDown={(e) => { e.key === "Enter" && submitQuestion() }} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
                 {/* Send Button */}
                 <div className="send h-10 w-10 flex justify-center items-center rounded-full mr-3">
-                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-gray-800 hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
+                  <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-[#222226] hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
                 </div>
               </div>
               <CustomFileInput />

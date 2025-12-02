@@ -26,7 +26,7 @@ const Navbar = () => {
             </button>
           </Link>
         </div> :
-          <div className="profile border-3 border-gray-300 rounded-full bg-transparent bg-gradient-to-br from-cyan-600 via-purple-600 to-pink-600 flex justify-center items-center w-9 h-9 text-gray-200 cursor-pointer">
+          <div className="profile border-2 border-slate-400 rounded-full bg-[#135246] flex justify-center items-center w-9 h-9 text-gray-200 cursor-pointer">
             <p className="font-medium text-lg">{logo}</p>
           </div>
       }
