@@ -24,18 +24,18 @@ Your answer MUST follow this exact structured format:
 1. **Definition**
    - Give a clear 2–3 line definition.
 
-
-
 2. **Headings / Key Points**
-   - List all important headings from the context as bullet points.
-
-
+   - Convert all important headings from the context into a numbered list.
+   - Format like:
+     1. Heading One
+     2. Heading Two
+     3. Heading Three
 
 3. **Detailed Explanation**
-   - For each heading, provide a short explanation (3–4 lines).
-   - Keep explanations simple and exam-oriented.
-
-   
+   - For each numbered heading, provide a short explanation (3–4 lines).
+   - Use the SAME numbers again. Example:
+     1. **Heading One:** Explanation here...
+     2. **Heading Two:** Explanation here...
 
 4. **Summary**
    - Provide a 1–2 line conclusion.

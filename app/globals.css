@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-.userBubble {
+/* .userBubble {
   background-color: #111827; /* blue */
-  color: white;
-  padding: 10px 14px;
-  border-radius: 16px;
-  max-width: 70%;
-  margin: 10px 0;
-  align-self: flex-end; /* push to right */
-  white-space: pre-wrap;
-}
+  /* color: white; */
+  /* padding: 10px 14px; */
+  /* border-radius: 16px; */
+  /* max-width: 70%; */
+  /* margin: 10px 0; */
+  /* align-self: flex-end; push to right */
+  /* white-space: pre-wrap; */
+/* } */ 
 
 /* .aiBubble { */
   /* background-color: #1f2937; grey */
@@ -22,5 +22,16 @@
   /* white-space: pre-wrap; */
   /* border: 1px solid #374151; */
 /* } */
+.prose p,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose ul,
+.prose ol,
+.prose li {
+  margin: revert;
+  padding: revert;
+}
 
 

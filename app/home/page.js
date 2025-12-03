@@ -60,6 +60,7 @@ export default function Home() {
   }
   // Submitting Question after button click
   const submitQuestion = async () => {
+    if( input === '') return;
     const userQuestion = input
     setQuestion(userQuestion)
     setInput('')
@@ -153,6 +154,7 @@ export default function Home() {
     }
   }, [messages])
 
+  console.log("MESSAGES:", messages);
   return (
     <>
       {isLogout && <LogoutPopUp isLogout={isLogout} setIsLogout={setIsLogout} />}
@@ -164,8 +166,9 @@ export default function Home() {
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 rounded-lg hover:bg-[#2d2e33] cursor-pointer ${selectedFileId === file._id ? 'bg-[#2d2e33]' : ''}`}>
+                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 flex justify-between rounded-lg hover:bg-[#2d2e33] cursor-pointer ${selectedFileId === file._id ? 'bg-[#2d2e33]' : ''}`}>
                   <p className="text-xs" >{file.fileName}</p>
+                  <Image src="/delete.png" alt="delete" width={17} height={17}></Image>
                 </span>
               ))}
             </div>
@@ -190,8 +193,8 @@ export default function Home() {
                 {messages.map((msg, i) => (
                   <div key={i} className="w-full mb-5">
                     <div className={msg.sender === "user"
-      ? "ml-auto bg-[#343541] text-white rounded-2xl p-4 my-3 shadow-md prose prose-invert"
-      : "mr-auto  text-gray-100 p-4 my-3 shadow-md prose prose-invert"}>
+      ? "ml-auto text-3xl font-semi-bold text-white prose prose-invert"
+      : "mr-auto  text-gray-100  prose prose-invert"}>
                       <ReactMarkdown>
                         {msg.text}
                       </ReactMarkdown>
@@ -216,7 +219,7 @@ export default function Home() {
             :
             // If no question enterred then show this UI
             <div className="QA mx-auto w-[60%] min-h-screen flex flex-col justify-center items-center gap-5">
-              <div className="head border">
+              <div className="head">
                 <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
                   Hello {name}
                 </h1>

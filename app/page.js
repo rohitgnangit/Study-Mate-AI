@@ -25,9 +25,7 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="bottom">
-          How it works ?
-        </div>
+
 
       </div>
     </>

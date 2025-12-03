@@ -109,7 +109,7 @@ const CustomFileInput = () => {
         <button
           type="button"
           onClick={handleButtonClick}
-          className=" text-white bg-gray-800 border border-transparent focus:outline-none focus:ring-1 focus:ring-gray-300 hover:bg-gray-700 font-semibold rounded-lg text-sm px-6 py-2.5 transition duration-150 ease-in-out shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer">
+          className=" text-gray-300 bg-[#2d2e33] border border-transparent focus:outline-none focus:ring-1 focus:ring-gray-300 hover:bg-gray-700 font-semibold rounded-lg text-sm px-6 py-2.5 transition duration-150 ease-in-out shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer">
           <Upload className="w-5 h-5" />
           {uploadFile ? 'Change File' : 'Upload File'}
         </button>
@@ -136,12 +136,12 @@ const CustomFileInput = () => {
             disabled={uploadFileLoading}
             className={`mt-2 font-semibold rounded-lg text-sm px-10 py-2.5 flex items-center justify-center gap-2 transition duration-150 cursor-pointer ${uploadFileLoading
                 ? 'bg-indigo-300 text-indigo-100 cursor-not-allowed'
-                : 'bg-gray-700 text-white hover:bg-gray-800 shadow-md'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-800 shadow-md'
               }`}
           >
             {uploadFileLoading ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-5 animate-spin" />
                 Uploading...
               </>
             ) : (
