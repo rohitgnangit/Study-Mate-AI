@@ -9,7 +9,7 @@ import { getEmbedding } from "@/lib/embeddings";
 import { revalidatePath } from "next/cache";
 
 
-export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fileSize, userId, filePath}) {
+export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fileSize, userId, filePath, fileId}) {
 
     await connectDB();
 
@@ -46,6 +46,7 @@ export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fi
     const newFile = await FileUpload.create({
         userId,
         fileName,
+        fileId,
         fileUrl,
         fileType,
         fileSize,

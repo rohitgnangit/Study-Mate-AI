@@ -71,6 +71,7 @@ const CustomFileInput = () => {
       // Sending file data to server action to save in database
       await saveFileAction({
         userId: session.user.email,
+        fileId: result.asset_id,
         fileUrl: result.secure_url,
         publicId: result.public_id,
         fileName: uploadFile.name,
@@ -152,8 +153,8 @@ const CustomFileInput = () => {
         {/* Upload Message */}
         {uploadMessage && (
           <p className={`mt-2 text-sm font-medium ${uploadMessage.startsWith('❌') ? 'text-red-500' : 'text-green-600'}`}>
-            {/* {uploadMessage} */}
-            Please upload pdf file only
+            {uploadMessage}
+            {/* Please upload pdf file only */}
           </p>
         )}
       </div>

@@ -9,6 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import { getFileAction } from "@/actions/getFileAction";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import DeleteButton from "@/components/DeleteButton";
 
 
 export default function Home() {
@@ -166,9 +167,10 @@ export default function Home() {
             <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
             <div className="files flex flex-col gap-1 mt-1 py-2 px-3 text-gray-200 w-full overflow-y-auto h-[62vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-900 [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full">
               {files.map((file) => (
-                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2.5 flex justify-between rounded-lg hover:bg-[#2d2e33] cursor-pointer ${selectedFileId === file._id ? 'bg-[#2d2e33]' : ''}`}>
+                <span key={file._id} onClick={() => loadChat(file._id)} className={`px-2.5 py-2 flex items-center justify-between rounded-lg hover:bg-[#2d2e33] ${<DeleteButton/>} cursor-pointer ${selectedFileId === file._id ? 'bg-[#2d2e33]' : ''}`}>
                   <p className="text-xs" >{file.fileName}</p>
-                  <Image src="/delete.png" alt="delete" width={17} height={17}></Image>
+                  <DeleteButton fileId={file._id} fileName={file.fileName} />
+                  {/* <Image src="/delete.png" alt="delete" width={16} height={16}></Image> */}
                 </span>
               ))}
             </div>
@@ -188,7 +190,8 @@ export default function Home() {
           {/* User Question Enterred then show this Chat UI */}
           {selectedFileId ?
             <div className="QA mx-auto w-[60%] h-screen flex flex-col justify-center items-center">
-
+              
+              {messages.length < 1 ? <div className="container mx-auto my-77 "><p className="text-gray-300 text-sm text-center">There are no messages yet !</p></div> :
               <div className="ansContainer text-gray-300 text-sm py-5 px-5 mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
                 {messages.map((msg, i) => (
                   <div key={i} className="w-full mb-5">
@@ -204,6 +207,7 @@ export default function Home() {
                 ))}
                 <div ref={messageEndRef}></div>
               </div>
+              }
 
               <div className="inputField flex justify-between items-center w-full h-15 rounded-2xl border-1 border-slate-900 bg-[#26272b] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
                 {/* Chat Input */}
@@ -224,7 +228,7 @@ export default function Home() {
                   Hello {name}
                 </h1>
               </div>
-              <span className="text-gray-400 text-xs">Please upload a file, if saved files are empty.</span>
+              <span className="text-gray-400 text-xs">Please upload a file, or select a file.</span>
               <div className="inputField flex justify-between items-center mb-10 h-15 w-full rounded-2xl bg-[#26272b]  border-1 border-slate-900 shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
                 {/* Chat Input */}
                 <input onChange={handleQuestion} onKeyDown={(e) => { e.key === "Enter" && submitQuestion() }} value={input} type="text" className="outline-none h-full w-[95%] rounded-2xl px-4 text-white" placeholder="ask something ?" />
