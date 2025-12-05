@@ -6,7 +6,6 @@ import AIEmbeddings from "@/models/AIEmbeddings"
 import { extractTextFromPdfUrl } from "@/lib/pdfExtract"
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { getEmbedding } from "@/lib/embeddings";
-import { revalidatePath } from "next/cache";
 
 
 export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fileSize, userId, filePath, fileId}) {
@@ -69,6 +68,5 @@ export async function saveFileAction({ fileUrl, publicId, fileName, fileType, fi
     await AIEmbeddings.insertMany(aiChunks);
     console.log(" Saved ", aiChunks.length, "vector search to AIChunk collection");    
 
-    revalidatePath("/home"); 
     return JSON.parse(JSON.stringify(newFile));
 }

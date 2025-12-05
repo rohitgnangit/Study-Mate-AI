@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileText, Loader2 } from 'lucide-react';
 import { saveFileAction } from '@/actions/saveFileAction';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 
-const CustomFileInput = () => {
+const CustomFileInput = ({ refreshFiles }) => {
   const { data:session } = useSession();
-  const router = useRouter();
   
 
   const [uploadFile, setUploadFile] = useState(null);
@@ -78,16 +76,21 @@ const CustomFileInput = () => {
         fileType: uploadFile.type,
         fileSize: uploadFile.size,
       })
-      // router.refresh();
+      refreshFiles();
 
       // Clear selected file after upload
       setUploadFile(null);
       if (inputRef.current) {
         inputRef.current.value = "";
       }
+
     } catch (error) {
       console.error('Error uploading file:', error);
-      setUploadMessage("Upload failed." + error.message);
+      // Error message for non-pdf files
+      if (!(uploadFile.type === 'application/pdf')) {
+        setUploadMessage("Please upload pdf file only.");
+      }
+      // setUploadMessage("Upload failed." + error.message);
     } finally {
       setUploadFileLoading(false);
     }
@@ -124,7 +127,7 @@ const CustomFileInput = () => {
           </p>
         ) : (
           <p className="text-xs text-gray-500">
-            PNG, JPG, or PDF (Max 10MB)
+            PDF files only. Max size 5MB.
           </p>
         )
         }

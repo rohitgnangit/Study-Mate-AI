@@ -3,11 +3,9 @@
 import React from 'react'
 import { deleteFileAction } from '@/actions/deleteFileAction';
 import { useTransition } from 'react';
-import { useRouter } from 'next/router';
 
-const DeletePopUp = ({ fileId, setIsDelete, fileName }) => {
+const DeletePopUp = ({ refreshFiles, fileId, setIsDelete, fileName }) => {
      const [isPending, startTransition] = useTransition();
-     const router = useRouter();
     
           const handleCancel = () => {
               setIsDelete(false);
@@ -18,9 +16,9 @@ const DeletePopUp = ({ fileId, setIsDelete, fileName }) => {
                 const formData = new FormData();
                 formData.append("fileId", fileId);
                 await deleteFileAction(formData);
+                refreshFiles();
             })
               setIsDelete(false);
-              router.refresh();
             }
 
   return (
