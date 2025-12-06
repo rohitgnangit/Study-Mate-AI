@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import DeleteButton from "@/components/DeleteButton";
 import Dashboard from "@/components/Dashboard";
+import Loader from "@/components/Loader";
 
 
 export default function Home() {
@@ -31,6 +32,10 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   // useRef for auto-scroll of the chat after getting answer
   const messageEndRef = useRef(null);
+  // A small loading animation for files in dashboard
+  const [isLoading, setIsLoading] = useState(false)
+  // A small lading animation before answer generation
+  const [answerLoading, setAnswerLoading] = useState(false)
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
@@ -45,16 +50,19 @@ export default function Home() {
     }
   }, [session]);
 
-
-    const fetchFiles = async () => {
-      if (!session?.user?.email) return;
+  const fetchFiles = async () => {
+    if (!session?.user?.email) return;
+      setIsLoading(true);
       const fileData = await getFileAction(session.user.email);
       setFiles(fileData);
       // console.log("Fetched files:", fileData);
+      setIsLoading(false);
+      return fileData;
     }
-  useEffect(() => {
-    fetchFiles();
+    useEffect(() => {
+      fetchFiles();
   }, [session]);
+
 
   // Getting question from input field
   const handleQuestion = (e) => {
@@ -63,6 +71,7 @@ export default function Home() {
   // Submitting Question after button click
   const submitQuestion = async () => {
     if( input === '') return;
+    setAnswerLoading(true);
     const userQuestion = input
     setQuestion(userQuestion)
     setInput('')
@@ -137,6 +146,7 @@ export default function Home() {
     });
 
     await loadChat(selectedFileId);
+    setAnswerLoading(false);
   }
 
   // Function to load chat history when file is selected
@@ -156,9 +166,10 @@ export default function Home() {
     }
   }, [messages])
 
-   const refreshFiles = () => fetchFiles();
-
-  console.log("MESSAGES:", messages);
+   const refreshFiles = async() => {
+     return await fetchFiles();
+  }
+    
 
 
   return (
@@ -167,7 +178,7 @@ export default function Home() {
 
       <div className="home bg-[#202123] min-h-screen flex">
         {/* Left Container */}
-        <Dashboard refreshFiles={refreshFiles} files={files} loadChat={loadChat} selectedFileId={selectedFileId} DeleteButton={DeleteButton} setIsLogout={setIsLogout} />
+        <Dashboard isLoading={isLoading} setIsLoading={setIsLoading} refreshFiles={refreshFiles} files={files} loadChat={loadChat} selectedFileId={selectedFileId} DeleteButton={DeleteButton} setIsLogout={setIsLogout}/>
 
         {/* Right Container */}
         <div className="right w-full">
@@ -177,20 +188,24 @@ export default function Home() {
             <div className="QA mx-auto w-[60%] h-screen flex flex-col justify-center items-center">
               
               {messages.length < 1 ? <div className="container mx-auto my-77 "><p className="text-gray-300 text-sm text-center">There are no messages yet !</p></div> :
-              <div className="ansContainer text-gray-300 text-sm py-5 px-5 mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
+              <div className="ansContainer flex justify-center items-center text-sm py-5 pr-3 mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] w-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
+                {answerLoading ? <Loader/> :
+                <div className="h-[100%] w-full">
                 {messages.map((msg, i) => (
                   <div key={i} className="w-full mb-5">
                     <div className={msg.sender === "user"
-      ? "ml-auto text-3xl font-semi-bold text-white prose prose-invert"
-      : "mr-auto  text-gray-100  prose prose-invert"}>
+                      ? "ml-auto text-3xl font-semi-bold text-gray-200 prose prose-invert"
+                      : "mr-auto text-gray-300  prose prose-invert"}>
                       <ReactMarkdown>
                         {msg.text}
                       </ReactMarkdown>
-                    </div>
-                    <div className="line border-b border-gray-700 my-4 opacity-40"></div>
-                  </div>
-                ))}
+                      </div>
+                      <div className="line border-b border-gray-700 my-4 opacity-40"></div>
+                      </div>
+                    ))}
                 <div ref={messageEndRef}></div>
+                </div>
+                  }
               </div>
               }
 
@@ -222,7 +237,7 @@ export default function Home() {
                   <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-[#222226] hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
                 </div>
               </div>
-              <CustomFileInput refreshFiles={refreshFiles} />
+              <CustomFileInput refreshFiles={refreshFiles} setIsLoading={setIsLoading} />
             </div>
           }
         </div>

@@ -17,31 +17,33 @@ export async function POST(req) {
 
         // Build final prompt
         const prompt = `
-You are a helpful study assistant. 
-Use ONLY the following context to answer the question.
-Your answer MUST follow this exact structured format:
+You are a helpful study assistant.  
+Use ONLY the following context to answer the question.  
+Your answer MUST follow this exact structured format and include the special symbols shown below:
 
-1. **Definition**
+1. **📝 Definition**
    - Give a clear 2–3 line definition.
 
-2. **Headings / Key Points**
+2. **✨ Headings / Key Points**
    - Convert all important headings from the context into a numbered list.
-   - Format like:
-     1. Heading One
-     2. Heading Two
-     3. Heading Three
+   - Use the following format:
+     1. ✨ Heading One
+     2. ✨ Heading Two
+     3. ✨ Heading Three
 
-3. **Detailed Explanation**
+3. **🔍 Detailed Explanation**
    - For each numbered heading, provide a short explanation (3–4 lines).
    - Use the SAME numbers again. Example:
-     1. **Heading One:** Explanation here...
-     2. **Heading Two:** Explanation here...
+     1. ✨ **Heading One:** 🔍 Explanation here...
+     2. ✨ **Heading Two:** 🔍 Explanation here...
+     3. ✨ **Heading Three:** 🔍 Explanation here...
 
-4. **Summary**
+4. **📌 Summary**
    - Provide a 1–2 line conclusion.
 
 If the answer is not found in the provided context,
-say: "I don't see this information in the provided notes."
+say:  
+"❗ I don't see this information in the provided notes."
 
 --------------------
 Context:
@@ -50,6 +52,7 @@ ${context}
 Question: ${question}
 
 Answer:
+
 `;
 
 

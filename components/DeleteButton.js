@@ -5,7 +5,7 @@ import DeletePopUp from './DeletePopUp';
 import Image from 'next/image'
 import { useState } from 'react';
 
-const DeleteButton = ({ refreshFiles, fileId, fileName }) => {
+const DeleteButton = ({ setIsLoading, refreshFiles, fileId, fileName }) => {
     const [isDelete, setIsDelete] = useState(false);
     
 
@@ -14,7 +14,7 @@ const DeleteButton = ({ refreshFiles, fileId, fileName }) => {
             <button onClick={() => {setIsDelete(true)}} className="cursor-pointer">
                 <Image src="/delete.png" alt="delete" width={16} height={16}></Image>
             </button>
-            {isDelete && <DeletePopUp refreshFiles={refreshFiles} fileId={fileId} setIsDelete={setIsDelete} fileName={fileName} />}
+            {isDelete && <DeletePopUp setIsLoading={setIsLoading} refreshFiles={refreshFiles} fileId={fileId} setIsDelete={setIsDelete} fileName={fileName} />}
     </div>
   )
 }

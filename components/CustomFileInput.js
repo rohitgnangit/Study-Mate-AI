@@ -4,7 +4,7 @@ import { saveFileAction } from '@/actions/saveFileAction';
 import { useSession } from 'next-auth/react';
 
 
-const CustomFileInput = ({ refreshFiles }) => {
+const CustomFileInput = ({ refreshFiles, setIsLoading }) => {
   const { data:session } = useSession();
   
 
@@ -65,6 +65,8 @@ const CustomFileInput = ({ refreshFiles }) => {
       const result = await response.json();
       setUploadMessage("File uploaded successfully!");
       console.log('Upload successful:', result);
+      
+      setIsLoading(true);
 
       // Sending file data to server action to save in database
       await saveFileAction({
@@ -77,6 +79,7 @@ const CustomFileInput = ({ refreshFiles }) => {
         fileSize: uploadFile.size,
       })
       refreshFiles();
+      setIsLoading(false)
 
       // Clear selected file after upload
       setUploadFile(null);

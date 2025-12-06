@@ -4,21 +4,23 @@ import React from 'react'
 import { deleteFileAction } from '@/actions/deleteFileAction';
 import { useTransition } from 'react';
 
-const DeletePopUp = ({ refreshFiles, fileId, setIsDelete, fileName }) => {
+const DeletePopUp = ({ setIsLoading, refreshFiles, fileId, setIsDelete, fileName }) => {
      const [isPending, startTransition] = useTransition();
     
-          const handleCancel = () => {
-              setIsDelete(false);
-            }
+     const handleCancel = () => {
+         setIsDelete(false);
+        }
         
-            const handleDelete = () => {
+        const handleDelete = () => {
+                setIsLoading(true);
                  startTransition(async() => {
                 const formData = new FormData();
                 formData.append("fileId", fileId);
                 await deleteFileAction(formData);
-                refreshFiles();
+                await refreshFiles();
+                setIsLoading(false);
             })
-              setIsDelete(false);
+            setIsDelete(false);
             }
 
   return (
