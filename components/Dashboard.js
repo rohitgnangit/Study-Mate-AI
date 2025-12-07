@@ -1,13 +1,16 @@
 "use client";
 import React from "react";
 import Loader from "./Loader";
+import Image from "next/image";
+import { useState } from "react";
 
 
-const Dashboard = ({isLoading, setIsLoading, refreshFiles, files, loadChat, selectedFileId, DeleteButton, setIsLogout }) => {
+const Dashboard = ({isSideBar, isLoading, setIsLoading, refreshFiles, files, loadChat, selectedFileId, DeleteButton, setIsLogout }) => {
 
+console.log("sidebar", isSideBar);
     return (
         <>
-        <div className="left flex flex-col justify-between text-white bg-[#18191c] w-1/4 float-left py-5">
+        <div className={`left md:flex md:flex-col md:justify-between text-white bg-[#18191c] md:w-[20%] w-[85%] fixed inset-0 z-40 transition-transform duration-300 ${isSideBar ? "translate-x-0":"-translate-x-full md:translate-x-0"}`}>
             <div className="dashboard py-5 mt-20 w-full">
                 <h2 className="py-1.5 px-5 text-gray-400">Saved Files</h2>
                     {isLoading ? <Loader/> : 

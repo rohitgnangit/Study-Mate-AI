@@ -36,6 +36,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   // A small lading animation before answer generation
   const [answerLoading, setAnswerLoading] = useState(false)
+  // Side bar
+  const [isSideBar, setIsSideBar] = useState(false);
 
   const email = session?.user?.email || "User";
   const user = email.split("@")[0].match(/^[a-zA-Z]+/)[0];
@@ -52,15 +54,15 @@ export default function Home() {
 
   const fetchFiles = async () => {
     if (!session?.user?.email) return;
-      setIsLoading(true);
-      const fileData = await getFileAction(session.user.email);
-      setFiles(fileData);
-      // console.log("Fetched files:", fileData);
-      setIsLoading(false);
-      return fileData;
-    }
-    useEffect(() => {
-      fetchFiles();
+    setIsLoading(true);
+    const fileData = await getFileAction(session.user.email);
+    setFiles(fileData);
+    // console.log("Fetched files:", fileData);
+    setIsLoading(false);
+    return fileData;
+  }
+  useEffect(() => {
+    fetchFiles();
   }, [session]);
 
 
@@ -70,7 +72,7 @@ export default function Home() {
   }
   // Submitting Question after button click
   const submitQuestion = async () => {
-    if( input === '') return;
+    if (input === '') return;
     setAnswerLoading(true);
     const userQuestion = input
     setQuestion(userQuestion)
@@ -166,10 +168,10 @@ export default function Home() {
     }
   }, [messages])
 
-   const refreshFiles = async() => {
-     return await fetchFiles();
+  const refreshFiles = async () => {
+    return await fetchFiles();
   }
-    
+
 
 
   return (
@@ -178,35 +180,38 @@ export default function Home() {
 
       <div className="home bg-[#202123] min-h-screen flex">
         {/* Left Container */}
-        <Dashboard isLoading={isLoading} setIsLoading={setIsLoading} refreshFiles={refreshFiles} files={files} loadChat={loadChat} selectedFileId={selectedFileId} DeleteButton={DeleteButton} setIsLogout={setIsLogout}/>
+        <Dashboard isSideBar={isSideBar} isLoading={isLoading} setIsLoading={setIsLoading} refreshFiles={refreshFiles} files={files} loadChat={loadChat} selectedFileId={selectedFileId} DeleteButton={DeleteButton} setIsLogout={setIsLogout} />
 
+        <button onClick={() => setIsSideBar(!isSideBar)} className="fixed top-7 left-3 z-50 md:hidden cursor-pointer">
+          <Image src="/menu.png" alt="sideBar" width={20} height={20} />
+        </button>
         {/* Right Container */}
-        <div className="right w-full">
+        <div className="right w-full md:w-[75%] md:ml-[20%] relative">
 
           {/* User Question Enterred then show this Chat UI */}
           {selectedFileId ?
-            <div className="QA mx-auto w-[60%] h-screen flex flex-col justify-center items-center">
-              
+            <div className="QA mx-auto w-[95%] md:w-[60%] h-screen flex flex-col justify-center items-center">
+
               {messages.length < 1 ? <div className="container mx-auto my-77 "><p className="text-gray-300 text-sm text-center">There are no messages yet !</p></div> :
-              <div className="ansContainer flex justify-center items-center text-sm py-5 pr-3 mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] w-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
-                {answerLoading ? <Loader/> :
-                <div className="h-[100%] w-full">
-                {messages.map((msg, i) => (
-                  <div key={i} className="w-full mb-5">
-                    <div className={msg.sender === "user"
-                      ? "ml-auto text-3xl font-semi-bold text-gray-200 prose prose-invert"
-                      : "mr-auto text-gray-300  prose prose-invert"}>
-                      <ReactMarkdown>
-                        {msg.text}
-                      </ReactMarkdown>
-                      </div>
-                      <div className="line border-b border-gray-700 my-4 opacity-40"></div>
-                      </div>
-                    ))}
-                <div ref={messageEndRef}></div>
-                </div>
+                <div className="ansContainer flex justify-center items-center text-sm md:py-5 pr-3 mt-15 md:mt-5 space-y-4 font-sans-serif overflow-y-auto h-[88vh] w-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#202123] [&::-webkit-scrollbar-thumb]:bg-[#343541] [&::-webkit-scrollbar-thumb]:rounded-full">
+                  {answerLoading ? <Loader /> :
+                    <div className="h-[100%] w-full">
+                      {messages.map((msg, i) => (
+                        <div key={i} className="w-full mb-5">
+                          <div className={msg.sender === "user"
+                            ? "ml-auto text-3xl font-semi-bold text-gray-200 prose prose-invert"
+                            : "mr-auto text-gray-300  prose prose-invert"}>
+                            <ReactMarkdown>
+                              {msg.text}
+                            </ReactMarkdown>
+                          </div>
+                          <div className="line border-b border-gray-700 my-4 opacity-40"></div>
+                        </div>
+                      ))}
+                      <div ref={messageEndRef}></div>
+                    </div>
                   }
-              </div>
+                </div>
               }
 
               <div className="inputField flex justify-between items-center w-full h-15 rounded-2xl border-1 border-slate-900 bg-[#26272b] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
@@ -222,7 +227,7 @@ export default function Home() {
 
             :
             // If no question enterred then show this UI
-            <div className="QA mx-auto w-[60%] min-h-screen flex flex-col justify-center items-center gap-5">
+            <div className="QA mx-auto w-[95%] md:w-[60%] min-h-screen flex flex-col justify-center items-center gap-5">
               <div className="head">
                 <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
                   Hello {name}

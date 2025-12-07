@@ -27,16 +27,16 @@ Your answer MUST follow this exact structured format and include the special sym
 2. **✨ Headings / Key Points**
    - Convert all important headings from the context into a numbered list.
    - Use the following format:
-     1. ✨ Heading One
-     2. ✨ Heading Two
-     3. ✨ Heading Three
+     1. 🖋 Heading One
+     2. 🖋 Heading Two
+     3. 🖋 Heading Three
 
 3. **🔍 Detailed Explanation**
    - For each numbered heading, provide a short explanation (3–4 lines).
    - Use the SAME numbers again. Example:
-     1. ✨ **Heading One:** 🔍 Explanation here...
-     2. ✨ **Heading Two:** 🔍 Explanation here...
-     3. ✨ **Heading Three:** 🔍 Explanation here...
+     1. 🖋 **Heading One:** 🔍 Explanation here...
+     2. 🖋 **Heading Two:** 🔍 Explanation here...
+     3. 🖋 **Heading Three:** 🔍 Explanation here...
 
 4. **📌 Summary**
    - Provide a 1–2 line conclusion.

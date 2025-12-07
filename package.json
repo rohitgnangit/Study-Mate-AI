@@ -12,6 +12,7 @@
     "@google/genai": "^1.30.0",
     "@langchain/textsplitters": "^1.0.0",
     "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^1.12.6",
     "@tailwindcss/typography": "^0.5.19",
     "axios": "^1.13.2",
     "cloudinary": "^2.8.0",
