@@ -36,13 +36,13 @@ export default function LandingPage() {
 
           <div className="one flex flex-col gap-5 items-center md:flex-row p-5 w-[90%] md:w-[80%] rounded-xl shadow-[0_0_12px_3px_rgba(0,0,0,0.25)] bg-gray-950">
             <div className="rounded-xl w-[98%] md:w-[51%] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
-              <Image className="rounded-xl" src="/home.png" alt="first" width={600} height={600} />
+              <Image className="rounded-xl" src="/login.png" alt="first" width={600} height={600} />
             </div>
             <div className="content px-8 w-[95%] md:w-[49%] flex justify-center items-center text-gray-400 text-sm italic">
               <ul className="list-disc">
-                <li className="py-2">Upload a pdf file by clicking upload button.</li>
-                <li className="py-2">You can able to see the uploaded pdf in Dashboard which is on your left side.</li>
-                <li className="py-2">Please select that file to ask questions to AI.</li>
+                <li className="py-2">First click on the Get started button, then you will navigate to signup page.</li>
+                <li className="py-2">The small robot will welcome you.</li>
+                <li className="py-2">Choose one signup method to access Lernova.</li>
               </ul>
             </div>
           </div>
@@ -50,13 +50,26 @@ export default function LandingPage() {
           <div className="two flex flex-col gap-5 items-center md:flex-row p-5 w-[90%] md:w-[80%] rounded-xl shadow-[0_0_12px_3px_rgba(0,0,0,0.25)] bg-gray-950">
             <div className="content px-8 w-[95%] md:w-[49%] flex justify-center items-center text-gray-400 text-sm italic">
               <ul className="list-disc">
+                <li className="py-2">Upload a pdf file by clicking upload button.</li>
+                <li className="py-2">You can able to see the uploaded pdf in Dashboard which is on your left side.</li>
+                <li className="py-2">Please select that file to ask questions to AI.</li>
+              </ul>
+            </div>
+            <div className="rounded-xl w-[98%] md:w-[51%] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
+              <Image className="rounded-xl" src="/home.png" alt="first" width={600} height={600} />
+            </div>
+          </div>
+
+          <div className="three flex flex-col gap-5 items-center md:flex-row p-5 w-[90%] md:w-[80%] rounded-xl shadow-[0_0_12px_3px_rgba(0,0,0,0.25)] bg-gray-950">
+            <div className="rounded-xl w-[98%] md:w-[51%] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
+              <Image className="rounded-xl" src="/home2.png" alt="first" width={600} height={600} />
+            </div>
+            <div className="content px-8 w-[95%] md:w-[49%] flex justify-center items-center text-gray-400 text-sm italic">
+              <ul className="list-disc">
                 <li className="py-2">After selected the file you can able to chat with AI about that file.</li>
                 <li className="py-2">Ask questions to AI, what is in your mind.</li>
                 <li className="py-2">Get the structured answer from AI and study.</li>
               </ul>
-            </div>
-            <div className="rounded-xl w-[98%] md:w-[51%] shadow-[0_0_12px_3px_rgba(0,0,0,0.25)]">
-              <Image className="rounded-xl" src="/home2.png" alt="first" width={600} height={600} />
             </div>
           </div>
         </div>
