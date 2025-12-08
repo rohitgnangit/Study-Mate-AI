@@ -11,7 +11,7 @@ const Navbar = () => {
   const logo = session?.user?.email?.[0]?.toUpperCase() || 'U';
 
   return (
-    <nav className="bg-transparent fixed w-full top-0 left-0 z-50 py-5 px-10 flex justify-between items-center">
+    <nav className="bg-transparant fixed w-full h-20 top-0 left-0 z-50 py-5 px-10 flex justify-between items-center">
       <Link href="/">
         <div className="logo font-semi-bold text-white px-3 text-lg"><Image src="/LernovaLogo2.png" alt="logo" width={130} height={130} /></div>
       </Link>
