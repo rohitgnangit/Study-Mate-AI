@@ -14,7 +14,7 @@ export default function LandingPage() {
             scene="https://prod.spline.design/JI4Y7BRWJRCtjXq0/scene.splinecode"
           />
         </div>
-        <div className="mx-auto flex flex-col w-[90%] md:w-[85%] justify-center items-center py-10 absolute top-[7%] md:top-[6%]">
+        <div className="mx-auto flex flex-col w-[90%] md:w-[85%] justify-center items-center py-10 absolute top-[4%] md:top-[6%]">
           <div className="heading py-5 w-full">
             <h1 className="text-5xl font-semibold text-gray-200 pt-20 text-center tracking-wider">YOUR SMART <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">STUDY</span> COMPANION</h1>
             <h1 className="text-5xl font-semibold text-gray-200 pt-2 pb-8 text-center tracking-wider">WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">AI</span></h1>
