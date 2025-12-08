@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Study-Mate-AI",
+  title: "Lernova",
   description: "A study companion powered by AI",
 };
 
