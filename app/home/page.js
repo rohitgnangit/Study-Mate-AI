@@ -222,7 +222,7 @@ export default function Home() {
                   <button onClick={submitQuestion} className="w-full h-full flex justify-center items-center rounded-full cursor-pointer bg-[#222226] hover:bg-gray-700"><Image src="/send.png" alt="send icon" height={19} width={19}></Image></button>
                 </div>
               </div>
-              <span className="text-gray-200 text-xs my-2">Lernova can make mistakes. so double check it</span>
+              <span className="text-gray-300 text-xs my-2">Lernova can make mistakes. so double check it</span>
             </div>
 
             :
