@@ -3,33 +3,15 @@
 import Spline from "@splinetool/react-spline";
 import Link from "next/link";
 import Image from "next/image";
+import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 
 export default function LandingPage() {
   return (
     <>
       <div className="landingPage flex flex-col justify-center items-center min-h-screen text-white h-full w-full bg-slate-950 relative"><div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-        <div className="animation w-full h-screen relative">
-          <Spline
-            scene="https://prod.spline.design/JI4Y7BRWJRCtjXq0/scene.splinecode"
-          />
-        </div>
-        <div className="mx-auto flex flex-col w-[90%] md:w-[85%] justify-center items-center py-10 absolute top-[4%] md:top-[6%]">
-          <div className="heading py-5 w-full">
-            <h1 className="text-5xl font-semibold text-gray-200 pt-20 text-center tracking-wider">YOUR SMART <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">STUDY</span> COMPANION</h1>
-            <h1 className="text-5xl font-semibold text-gray-200 pt-2 pb-8 text-center tracking-wider">WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">AI</span></h1>
-            <p className="text-lg tracking-wider font text-gray-400 text-center">Upload your notes or PDFs, ask questions, and get </p>
-            <p className="text-lg tracking-wider font text-gray-400 text-center">instant explanations. Study smarter, not harder, with AI that</p>
-            <p className="text-lg tracking-wider font text-gray-400 text-center">understands your learning material.</p>
-          </div>
-          <Link href="/signup">
-            <button className="mt-3 relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-2xl group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-gray-200  focus:ring-1 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
-              <span className="relative px-7 py-2 pb-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-2xl group-hover:bg-transparent group-hover:dark:bg-transparent cursor-pointer">
-                Get started
-              </span>
-            </button>
-          </Link>
-        </div>
+      <Hero/>
+
         {/* Bottom */}
         <div className="bottom flex flex-col justify-center items-center py-10 gap-10 w-full bg-[#110e14]">
           <h2 className="text-gray-400 text-xl font-semi-bold">How Lernova works ?</h2>
