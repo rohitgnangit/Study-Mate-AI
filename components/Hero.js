@@ -21,11 +21,8 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <h1 className="text-5xl font-semibold text-gray-200 pt-20 text-center tracking-wider">YOUR SMART <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">STUDY</span> COMPANION</h1>
-                    <h1 className="text-5xl font-semibold text-gray-200 pt-2 pb-8 text-center tracking-wider">WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">AI</span></h1>
-                    <p className="text-lg tracking-wider font text-gray-300 text-center">Upload your notes or PDFs, ask questions, and get </p>
-                    <p className="text-lg tracking-wider font text-gray-300 text-center">instant explanations. Study smarter, not harder, with AI that</p>
-                    <p className="text-lg tracking-wider font text-gray-300 text-center">understands your learning material.</p>
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Unlock Your Mind's Potential</h1>
+                    <p className="text-lg text-white mb-8">Discover the power of your mind with Lernova - Your Ultimate AI-Powered Study Companion</p>
                     <Link href="/signup">
                         <motion.button className="group relative inline-flex items-center justify-center mt-5 p-[2px] rounded-xl bg-gradient-to-r from-red-400 via-yellow-400 to-orange-400 cursor-pointer"
                             whileHover={{ scale: 1.05 }}
