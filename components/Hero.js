@@ -21,10 +21,10 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Unlock Your Mind&apos;s Potential</h1>
-                    <p className="text-lg text-white mb-8">Discover the power of your mind with Lernova - Your Ultimate AI-Powered Study Companion</p>
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Unlock Your Mind&apos;s Potential</h1>
+                    <p className="md:text-lg text-white mb-6">Discover the power of your mind with Lernova - Your Ultimate AI-Powered Study Companion</p>
                     <Link href="/signup">
-                        <motion.button className="group relative inline-flex items-center justify-center mt-5 p-[2px] rounded-xl bg-gradient-to-r from-red-400 via-yellow-400 to-orange-400 cursor-pointer"
+                        <motion.button className="group relative inline-flex items-center justify-center p-[2px] rounded-xl bg-gradient-to-r from-red-400 via-yellow-400 to-orange-400 cursor-pointer"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
@@ -56,7 +56,7 @@ const HighlightItem = ({ title, content }) => {
     return (
         <div className="flex flex-col justify-center items-center gap-2">
             <span className='text-xs font-semibold'>{title}</span>
-            <p className="">{content}</p>
+            <p className="text-sm">{content}</p>
         </div>
     )
 }

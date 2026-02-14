@@ -11,7 +11,7 @@ const Navbar = () => {
   const logo = session?.user?.email?.[0]?.toUpperCase() || 'U';
 
   return (
-    <nav className="bg-transparant fixed w-full h-20 top-0 left-0 z-50 py-5 px-10 flex justify-between items-center">
+    <nav className="bg-transparant fixed w-full h-20 top-0 left-0 z-50 py-5 md:px-10 flex justify-between items-center">
       <Link href="/">
         <div className="logo font-semi-bold text-white px-3 text-lg"><Image src="/lernova-logo.png" alt="logo" width={190} height={190} /></div>
       </Link>
@@ -19,7 +19,7 @@ const Navbar = () => {
       {!session ?
         <div className="btns">
           <Link href="/signup">
-            <button className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-gray-200 focus:ring-1 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+            <button className="relative mr-4 md:mr-0 inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-gray-200 focus:ring-1 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
               <span className="relative px-4.5 py-1.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent cursor-pointer">
                 Sign in
               </span>
