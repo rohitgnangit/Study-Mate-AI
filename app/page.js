@@ -29,28 +29,28 @@ export default function LandingPage() {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-950"
+            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-800"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
             >
               <Upload size={20} color="gray" />
               <p className="">Upload notes easily</p>
             </motion.div>
-            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-950"
+            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-800"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
             >
               <Bot size={20} color="gray" />
               <p className="">Chat with AI</p>
             </motion.div>
-            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-950"
+            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-800"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
             >
               <Timer size={20} color="gray" />
               <p className="">Save your Time</p>
             </motion.div>
-            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-950"
+            <motion.div className="w-[70%] md:w-[20%] flex flex-col justify-center items-center gap-5 py-10 px-13 shadow-xs shadow-cyan-900 text-sm text-gray-500 font-semibold rounded-lg border border-slate-800"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
             >

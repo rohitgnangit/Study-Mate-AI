@@ -20,11 +20,11 @@ const Footer = () => {
                     transition={{ duration: 1 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-2xl font-bold text-white">Quick Links</h2>
-                    <a href="" className="block text-white hover:text-gray-300">About Us</a>
-                    <a href="" className="block text-white hover:text-gray-300">Contact Us</a>
-                    <a href="/signup" className="block text-white hover:text-gray-300">Signup</a>
-                    <a href="/signup" className="block text-white hover:text-gray-300">Login</a>
+                    <h2 className="text-2xl font-bold text-gray-300">Quick Links</h2>
+                    <a href="" className="block text-gray-300 hover:text-gray-400">About Us</a>
+                    <a href="" className="block text-gray-300 hover:text-gray-400">Contact Us</a>
+                    <a href="/signup" className="block text-gray-300 hover:text-gray-400">Signup</a>
+                    <a href="/signup" className="block text-gray-300 hover:text-gray-400">Login</a>
                 </motion.div>
                 <motion.div className="flex flex-col gap-2"
                     initial={{ opacity: 0, x: -50 }}
@@ -32,10 +32,10 @@ const Footer = () => {
                     transition={{ duration: 1 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-2xl font-bold text-white">Company</h2>
-                    <a href="" className="block text-white hover:text-gray-300">Privacy Policy</a>
-                    <a href="" className="block text-white hover:text-gray-300">Cookies Policy</a>
-                    <a href="" className="block text-white hover:text-gray-300">Terms & Conditions</a>
+                    <h2 className="text-2xl font-bold text-gray-300">Company</h2>
+                    <a href="" className="block text-gray-300 hover:text-gray-400">Privacy Policy</a>
+                    <a href="" className="block text-gray-300 hover:text-gray-400">Cookies Policy</a>
+                    <a href="" className="block text-gray-300 hover:text-gray-400">Terms & Conditions</a>
                 </motion.div>
             </div>
             </div>
