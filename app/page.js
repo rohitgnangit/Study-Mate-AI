@@ -7,11 +7,13 @@ import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion"
 import { Upload, Timer, Shield, Bot } from "lucide-react";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 
 export default function LandingPage() {
   return (
     <>
+    <SmoothScrollProvider>
     <div className="landingPage overflow-x-hidden flex flex-col justify-center items-center min-h-screen text-white h-full w-full relative bg-black bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.35),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(56,189,248,0.35),transparent_45%),radial-gradient(circle_at_50%_100%,rgba(168,85,247,0.30),transparent_50%)]">
         <Hero />
         {/* Features */}
@@ -181,6 +183,7 @@ export default function LandingPage() {
         </div>
         <Footer />
       </div>
+      </SmoothScrollProvider>
     </>
   );
 }
